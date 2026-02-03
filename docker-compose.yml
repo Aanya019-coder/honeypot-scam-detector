@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  honeypot-api:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - API_SECRET_KEY=${API_SECRET_KEY:-your-secret-api-key-here}
+    restart: unless-stopped
