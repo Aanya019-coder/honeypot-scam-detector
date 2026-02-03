@@ -487,6 +487,8 @@ honeypot_agent = HoneypotAgent()
 
 # ==================== API Endpoints ====================
 
+
+    
 @app.middleware("http")
 async def verify_api_key(request: Request, call_next):
     """Middleware to verify API key"""
@@ -495,12 +497,22 @@ async def verify_api_key(request: Request, call_next):
     
     api_key = request.headers.get("x-api-key")
     if api_key != API_SECRET_KEY:
+        # Debug logging to help identify specific mismatch
+        expected_masked = f"{API_SECRET_KEY[:4]}...{API_SECRET_KEY[-4:]}" if len(API_SECRET_KEY) > 8 else "***"
+        received_masked = f"{api_key[:4]}...{api_key[-4:]}" if api_key and len(api_key) > 8 else (api_key if api_key else "None")
+        logger.warning(f"⚠️ Auth Failed! Expected: {expected_masked}, Received: {received_masked}")
+        
         return JSONResponse(
             status_code=401,
             content={"detail": "Invalid or missing API key"}
         )
     
     return await call_next(request)
+
+@app.on_event("startup")
+async def startup_event():
+    logger.info(f"🚀 Server started! Active API Key: {API_SECRET_KEY[:4]}...{API_SECRET_KEY[-4:]}")
+    logger.info(f"📝 Should match environment variable or .env file")
 
 @app.get("/health")
 async def health_check():
