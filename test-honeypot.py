@@ -11,7 +11,7 @@ from datetime import datetime
 
 # Configuration
 API_URL = "http://localhost:8000"  # Change to your deployed URL
-API_KEY = "your-secret-api-key-here"  # Change to your actual API key
+API_KEY = "hackathon-2024-honeypot-secure-key-abc123"  # Change to your actual API key
 
 headers = {
     "x-api-key": API_KEY,
