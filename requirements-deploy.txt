@@ -1,0 +1,7 @@
+fastapi==0.104.1
+uvicorn[standard]==0.24.0
+pydantic==2.4.2
+requests==2.31.0
+python-dotenv==1.0.0
+annotated-types==0.6.0
+typing-extensions==4.8.0
